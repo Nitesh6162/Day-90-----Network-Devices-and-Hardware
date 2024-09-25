@@ -1,0 +1,78 @@
+{1}
+Problem Description: Configuring iptables for Web Server Security
+Objective: Secure a web server by implementing precise iptables rules that manage web traffic and ICMP requests, ensuring controlled accessibility and robust security.
+
+NOTE: Password for sudo is user@123!
+
+TASK-1
+
+Verify and Install iptables:
+
+Install iptables in your Linux based environment to manage firewall settings.
+
+TASK-2
+
+Set Default Policies for Network Traffic:
+
+Establish secure default policies by setting the INPUT and FORWARD chains to DROP all traffic and the OUTPUT chain to ACCEPT.
+
+NOTE: Use this command before attempting this task otherwise your lab connection will close.
+
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 
+TASK-3
+
+Configure Rules for Essential Web Traffic:
+Enable HTTP and HTTPS by allowing traffic on ports 80 and 443, ensuring the web server remains accessible to users.
+
+TASK-4
+
+Manage ICMP Traffic:
+
+Add a rule to block all incoming ICMP requests to protect against network scanning.
+
+
+ASWER REWSAN MYYMYMYMYM::::::::::::::::
+
+TASK 1  sudo apt install  iptables
+
+TASK 2  sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT # as per the instructions
+        sudo iptables -P INPUT DROP
+        sudo iptables -P FORWARD DROP
+        sudo iptables -P OUTPUT ACCEPT
+
+TASK 3 sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT  
+       sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+TASK 4 sudo iptables -A INPUT -p icmp -j DROP
+
+=====================================================================================================================================================================================================================
+[2]
+TASK-1: Remove the ICMP Block Rule
+Description:
+Remove a rule blocking ICMP requests to allow network ping tests.
+
+TASK-2: Block Traffic from a Specific IP Address
+Description:
+Add a rule to prevent all access from an ip 192.0.2.0 to 192.0.2.255 (i.e.,192.0.2.0/24)
+
+
+ASNWER REWNSA YMMY:::::::::::::::::::
+
+TASK 1 user@e05975917153:~$ sudo iptables -L --line-numbers
+      it will display below lines, we have to find the line number if icmp in the dispalyed lines it is in line number 1
+      Chain INPUT (policy ACCEPT)
+      num  target     prot opt source               destination         
+      1    DROP       icmp --  anywhere             anywhere             icmp echo-request
+      
+      Chain FORWARD (policy ACCEPT)
+      num  target     prot opt source               destination         
+      
+      Chain OUTPUT (policy ACCEPT)
+      num  target     prot opt source               destination   
+
+       user@e05975917153:~$ sudo iptables -D INPUT 1
+
+TASK 2 user@e05975917153:~$ sudo iptables -A INPUT -s 192.0.2.0/24 -j DROP 
+
+
+=====================================================================================================================================================================================================================
